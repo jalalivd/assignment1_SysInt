@@ -1,0 +1,35 @@
+import numpy as np 
+from scipy.integrate import odeint 
+import matplotlib.pyplot as plt 
+
+def u(t): 
+    return 1
+
+def u1(t): 
+    return t
+
+def model(y, t, u): 
+    dy_dt = np.zeros(3) 
+    dy_dt[0] = y[1] 
+    dy_dt[1] = y[2] 
+    dy_dt[2] = -11*y[0]-17*y[1]-5*y[2]+9*u(t) 
+    return dy_dt 
+
+y0 = [0, 0, 0] 
+
+t = np.linspace(0, 10, 100) 
+
+y = odeint(model, y0, t, args=(u,)) 
+
+y1 = odeint(model, y0, t, args=(u1,)) 
+
+plt.plot(t, y[:,0], 'r', label='y') 
+plt.plot(t, np.ones(len(t)), 'b', label='u') 
+plt.xlabel('Time') 
+plt.ylabel('Response') 
+plt.legend() 
+plt.show() 
+
+plt.plot(t, y1[:,0], 'r', label='y') 
+plt.plot(t, t, 'b', label='u') 
+plt.show()
